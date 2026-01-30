@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Shabnam";
+  src: url(../public/fonts/Shabnam.woff2);
+}
+
+* {
+    font-family: "Shabnam", sans-serif;
+  }

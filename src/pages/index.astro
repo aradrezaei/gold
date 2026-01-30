@@ -1,11 +1,201 @@
 ---
-import Welcome from '../components/Welcome.astro';
 import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
 ---
 
-<Layout>
-	<Welcome />
+<Layout title="شاتو - محاسبه‌گر حرفه‌ای حباب طلا">
+  <main class="min-h-screen bg-gradient-to-br from-gray-50 via-white to-gray-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-300">
+    <div class="container mx-auto px-4 py-8 max-w-4xl">
+      
+      <!-- Header -->
+      <header class="mb-8 animate-fade-in">
+        <div class="flex items-center justify-between mb-6">
+          <div class="flex items-center gap-4">
+            <div class="w-16 h-16 bg-gradient-to-br from-gold-400 to-gold-600 rounded-2xl flex items-center justify-center shadow-lg shadow-gold-500/30 dark:shadow-gold-600/20">
+              <span class="text-3xl">💰</span>
+            </div>
+            <div>
+              <h1 class="text-4xl font-bold bg-gradient-to-l from-gold-600 to-gold-400 bg-clip-text text-transparent">
+                شاتو
+              </h1>
+              <p class="text-gray-600 dark:text-gray-400 text-sm mt-1">
+                محاسبه‌گر حرفه‌ای حباب طلا
+              </p>
+            </div>
+          </div>
+          
+          <button
+            id="themeToggle"
+            class="w-12 h-12 rounded-xl bg-white dark:bg-gray-800 shadow-lg border border-gray-200 dark:border-gray-700 flex items-center justify-center hover:scale-110 transition-all duration-200"
+            aria-label="تغییر تم"
+          >
+            <svg class="w-6 h-6 text-gold-500 dark:hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z"/>
+            </svg>
+            <svg class="w-6 h-6 text-gold-400 hidden dark:block" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <!-- Calculator Card -->
+      <div class="bg-white dark:bg-gray-800 rounded-3xl shadow-2xl border border-gray-200 dark:border-gray-700 overflow-hidden animate-slide-up">
+        
+        <!-- Form -->
+        <div class="p-8">
+          <form id="goldForm" class="space-y-6">
+            
+            <!-- Market Price -->
+            <div class="space-y-2">
+              <label for="marketPrice" class="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                <span class="text-xl">💰</span>
+                <span>قیمت بازار (هر گرم ۱۸ عیار)</span>
+              </label>
+              <div class="relative">
+                <input
+                  type="text"
+                  id="marketPrice"
+                  class="w-full px-4 py-4 pr-12 text-lg rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:border-gold-500 dark:focus:border-gold-400 focus:ring-4 focus:ring-gold-500/20 transition-all outline-none"
+                  placeholder="۵,۰۰۰,۰۰۰"
+                  autocomplete="off"
+                  required
+                />
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">
+                  تومان
+                </span>
+              </div>
+            </div>
+
+            <!-- Dollar Rate -->
+            <div class="space-y-2">
+              <label for="dollarRate" class="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                <span class="text-xl">💵</span>
+                <span>نرخ دلار</span>
+              </label>
+              <div class="relative">
+                <input
+                  type="text"
+                  id="dollarRate"
+                  class="w-full px-4 py-4 pr-12 text-lg rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:border-gold-500 dark:focus:border-gold-400 focus:ring-4 focus:ring-gold-500/20 transition-all outline-none"
+                  placeholder="۶۵۰,۰۰۰"
+                  autocomplete="off"
+                  required
+                />
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">
+                  تومان
+                </span>
+              </div>
+            </div>
+
+            <!-- Global Ounce -->
+            <div class="space-y-2">
+              <label for="globalOunce" class="flex items-center gap-2 text-sm font-medium text-gray-700 dark:text-gray-300">
+                <span class="text-xl">🌍</span>
+                <span>قیمت انس جهانی</span>
+              </label>
+              <div class="relative">
+                <input
+                  type="text"
+                  id="globalOunce"
+                  class="w-full px-4 py-4 pr-12 text-lg rounded-xl border-2 border-gray-200 dark:border-gray-600 bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:border-gold-500 dark:focus:border-gold-400 focus:ring-4 focus:ring-gold-500/20 transition-all outline-none"
+                  placeholder="۲,۰۵۰"
+                  autocomplete="off"
+                  required
+                />
+                <span class="absolute left-4 top-1/2 -translate-y-1/2 text-sm text-gray-500 dark:text-gray-400">
+                  دلار
+                </span>
+              </div>
+            </div>
+
+            <!-- Submit Button -->
+            <button
+              type="submit"
+              class="w-full py-4 px-6 bg-gradient-to-l from-gold-500 to-gold-600 hover:from-gold-600 hover:to-gold-700 text-white font-bold text-lg rounded-xl shadow-lg shadow-gold-500/30 hover:shadow-xl hover:shadow-gold-500/40 transition-all duration-300 hover:scale-[1.02] active:scale-[0.98] flex items-center justify-center gap-2"
+            >
+              <span>محاسبه حباب</span>
+              <span class="text-xl">🔍</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Results -->
+        <div id="results" class="hidden bg-gradient-to-br from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 p-8 border-t border-gray-200 dark:border-gray-700">
+          
+          <!-- Results Header -->
+          <div class="mb-6 text-center">
+            <h2 class="text-2xl font-bold text-gray-900 dark:text-white mb-2">
+              📊 نتایج تحلیل
+            </h2>
+            <p id="datetime" class="text-sm text-gray-600 dark:text-gray-400"></p>
+          </div>
+
+          <!-- Results Grid -->
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+            
+            <!-- Gold 24k -->
+            <div class="bg-white dark:bg-gray-800 rounded-xl p-4 border border-gray-200 dark:border-gray-700">
+              <div class="text-sm text-gray-600 dark:text-gray-400 mb-1">طلای ۲۴ عیار</div>
+              <div id="gold24k" class="text-2xl font-bold text-gray-900 dark:text-white"></div>
+            </div>
+
+            <!-- Real Price -->
+            <div class="bg-gradient-to-br from-gold-50 to-gold-100 dark:from-gold-900/20 dark:to-gold-800/20 rounded-xl p-4 border border-gold-200 dark:border-gold-700">
+              <div class="text-sm text-gold-700 dark:text-gold-400 mb-1">قیمت واقعی ۱۸ عیار</div>
+              <div id="realPrice" class="text-2xl font-bold text-gold-900 dark:text-gold-300"></div>
+            </div>
+
+            <!-- Bubble Amount -->
+            <div id="bubbleCard" class="bg-white dark:bg-gray-800 rounded-xl p-4 border-2">
+              <div class="text-sm mb-1">میزان حباب</div>
+              <div id="bubbleAmount" class="text-2xl font-bold"></div>
+            </div>
+
+            <!-- Bubble Percentage -->
+            <div id="percentCard" class="bg-white dark:bg-gray-800 rounded-xl p-4 border-2">
+              <div class="text-sm mb-1">درصد حباب</div>
+              <div id="bubblePercent" class="text-2xl font-bold"></div>
+            </div>
+          </div>
+
+          <!-- Status Badge -->
+          <div class="flex justify-center mb-6">
+            <div id="statusBadge" class="px-6 py-3 rounded-full font-bold text-lg shadow-lg"></div>
+          </div>
+
+          <!-- Recommendation -->
+          <div id="recommendation" class="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-xl p-6">
+            <h3 class="text-lg font-bold text-blue-900 dark:text-blue-300 mb-2 flex items-center gap-2">
+              <span>💡</span>
+              <span>توصیه:</span>
+            </h3>
+            <p id="recommendationText" class="text-blue-800 dark:text-blue-200 leading-relaxed"></p>
+          </div>
+
+          <!-- Reset Button -->
+          <button
+            id="resetBtn"
+            class="w-full mt-6 py-3 px-6 bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600 text-gray-800 dark:text-gray-200 font-semibold rounded-xl transition-all duration-200 hover:scale-[1.02] active:scale-[0.98]"
+          >
+            🔄 محاسبه مجدد
+          </button>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <footer class="mt-8 text-center text-gray-600 dark:text-gray-400 animate-fade-in">
+        <p class="text-sm mb-2">
+          ساخته شده با ❤️ توسط 
+آراد رضایی
+        </p>
+        <p class="text-xs text-gray-500 dark:text-gray-500">
+          نسخه ۱.۰.۰ | PWA فعال | کاملاً آفلاین
+        </p>
+      </footer>
+    </div>
+  </main>
+
+  <script src="../scripts/calculator.js"></script>
+  <script src="../scripts/theme.js"></script>
+  <script src="../scripts/pwa-notification.js"></script>
 </Layout>

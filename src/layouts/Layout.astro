@@ -1,22 +1,41 @@
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+---
+import "../styles/global.css";
+interface Props {
+  title: string;
+}
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+const { title } = Astro.props;
+---
+
+<!doctype html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="شاتو - محاسبه‌گر حرفه‌ای و دقیق حباب قیمت طلا. کاملاً رایگان، آفلاین و سریع" />
+    <meta name="keywords" content="طلا، حباب طلا، قیمت طلا، محاسبه طلا، شاتو، انس جهانی، دلار" />
+    <meta name="author" content="Arad Rezaei" />
+    <meta name="theme-color" content="#eab308" />
+    
+    <!-- PWA -->
+    <link rel="manifest" href="/manifest.json" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="apple-touch-icon" href="/icon-192.png" />
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="شاتو - محاسبه‌گر حباب طلا" />
+    <meta property="og:description" content="محاسبه دقیق و حرفه‌ای حباب قیمت طلا" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://aradrezaei.github.io" />
+    
+    <title>{title}</title>
+  </head>
+  <body class="antialiased">
+    <slot />
+  </body>
+</html>
