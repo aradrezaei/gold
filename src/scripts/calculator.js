@@ -1,5 +1,6 @@
-// ثابت تبدیل
-const OUNCE_TO_GRAM = 31.1035;
+// ثابت‌های محاسبه (به روز شده با فرمول صحیح)
+const GOLD_COEFFICIENT = 31.1035; // تبدیل اونس به گرم
+const PURITY_18K = 0.75; // خلوص 18 عیار (18/24)
 
 // کلاس محاسبه‌گر
 class GoldCalculator {
@@ -10,18 +11,27 @@ class GoldCalculator {
   }
 
   calculateGold24k() {
-    return (this.globalOunce * this.dollarRate) / OUNCE_TO_GRAM;
+    // فرمول صحیح: (قیمت انس × نرخ دلار) ÷ 31.1035
+    return (this.globalOunce * this.dollarRate) / GOLD_COEFFICIENT;
   }
 
   calculateGold18k() {
-    return this.calculateGold24k() * (18 / 24);
+    // محاسبه قیمت واقعی 18 عیار
+    // 18 عیار = 75% خلوص
+    return this.calculateGold24k() * PURITY_18K;
   }
 
   calculateBubble() {
     const realPrice = this.calculateGold18k();
     const bubble = this.marketPrice - realPrice;
     const percentage = (bubble / realPrice) * 100;
-    return { bubble, percentage, realPrice };
+    
+    return { 
+      bubble, 
+      percentage, 
+      realPrice,
+      gold24k: this.calculateGold24k()
+    };
   }
 
   getStatus(percentage) {
@@ -44,19 +54,20 @@ class GoldCalculator {
 }
 
 // فرمت کردن اعداد با دقت کامل
-function formatNumber(num, decimals = 0) {
-  // اگه عدد اعشاری داشت، تا 2 رقم نشون بده
-  if (decimals > 0) {
+function formatNumber(num, showDecimals = false) {
+  // اگه عدد خیلی بزرگه، بدون اعشار نشون بده
+  if (!showDecimals || num > 1000000) {
     return new Intl.NumberFormat('fa-IR', {
-      minimumFractionDigits: decimals,
-      maximumFractionDigits: decimals
-    }).format(num);
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0
+    }).format(Math.round(num));
   }
-  // برای اعداد صحیح، دقیق بدون گرد کردن
+  
+  // برای اعداد کوچیکتر یا زمانی که اعشار خواسته شده
   return new Intl.NumberFormat('fa-IR', {
     minimumFractionDigits: 0,
-    maximumFractionDigits: 0
-  }).format(Math.floor(num));
+    maximumFractionDigits: 2
+  }).format(num);
 }
 
 // تبدیل اعداد فارسی به انگلیسی
@@ -111,8 +122,7 @@ function setupInputFormatting() {
 
 // نمایش نتایج
 function displayResults(calculator) {
-  const { bubble, percentage, realPrice } = calculator.calculateBubble();
-  const gold24k = calculator.calculateGold24k();
+  const { bubble, percentage, realPrice, gold24k } = calculator.calculateBubble();
   const status = calculator.getStatus(percentage);
   const recommendation = calculator.getRecommendation(percentage);
 
@@ -121,13 +131,13 @@ function displayResults(calculator) {
   resultsDiv.classList.remove('hidden');
   resultsDiv.classList.add('animate-slide-down');
 
-  // پر کردن مقادیر با دقت کامل
-  document.getElementById('gold24k').textContent = formatNumber(gold24k, 2) + ' تومان';
-  document.getElementById('realPrice').textContent = formatNumber(realPrice, 2) + ' تومان';
+  // پر کردن مقادیر با فرمت کامل
+  document.getElementById('gold24k').textContent = formatNumber(gold24k) + ' تومان';
+  document.getElementById('realPrice').textContent = formatNumber(realPrice) + ' تومان';
   document.getElementById('bubbleAmount').textContent = 
-    (bubble >= 0 ? '+' : '') + formatNumber(Math.abs(bubble), 2) + ' تومان';
+    (bubble >= 0 ? '+' : '') + formatNumber(Math.abs(bubble)) + ' تومان';
   document.getElementById('bubblePercent').textContent = 
-    (percentage >= 0 ? '+' : '') + percentage.toFixed(3) + '%';
+    (percentage >= 0 ? '+' : '') + percentage.toFixed(2) + '%';
   document.getElementById('datetime').textContent = getDateTime();
   document.getElementById('recommendationText').textContent = recommendation;
 

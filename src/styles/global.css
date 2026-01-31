@@ -2,9 +2,63 @@
 
 @font-face {
   font-family: "Shabnam";
-  src: url(../public/fonts/Shabnam.woff2);
+  /* نکته: در Astro اگر فونت در public است، آدرس باید از ریشه باشد */
+  src: url("/fonts/Shabnam.woff2") format("woff2");
+  font-display: swap;
 }
 
-* {
-    font-family: "Shabnam", sans-serif;
+@theme {
+  /* در نسخه ۴ این دستور باید به این شکل باشد تا کلاس dark در اولویت قرار بگیرد */
+  --variant-dark: .dark &;
+
+  --color-gold-50: #fffbf0;
+  --color-gold-100: #fef2cd;
+  --color-gold-200: #fde49b;
+  --color-gold-300: #fdd162;
+  --color-gold-400: #fcbf34;
+  --color-gold-500: #fbb01b;
+  --color-gold-600: #df920f;
+  --color-gold-700: #b9700b;
+  --color-gold-800: #96560e;
+  --color-gold-900: #7a4610;
+
+  @keyframes shimmer { 100% { transform: translateX(100%); } }
+  @keyframes fadeInUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
   }
+  @keyframes marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100%); }
+  }
+
+  --animate-shimmer: shimmer 2s infinite;
+  --animate-fade-in-up: fadeInUp 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  --animate-marquee: marquee 30s linear infinite;
+  
+  /* تعریف فونت در تم تیلویند (راه اصولی) */
+  --font-family-shabnam: "Shabnam", sans-serif;
+}
+
+/* اعمال فونت به کل بدنه */
+@layer base {
+  html {
+    font-family: var(--font-family-shabnam);
+    /* جلوگیری از پرش‌های افقی و نرم کردن اسکرول */
+    scroll-behavior: smooth;
+  }
+}
+
+@utility bg-grid-shatoor {
+  background-image: linear-gradient(to right, #80808012 1px, transparent 1px), 
+                    linear-gradient(to bottom, #80808012 1px, transparent 1px);
+  background-size: 32px 32px;
+}
+
+/* استایل ورودی‌ها */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+input[type="number"] { -moz-appearance: textfield; }
