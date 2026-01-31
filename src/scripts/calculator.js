@@ -1,8 +1,6 @@
-// ثابت‌های محاسبه (به روز شده با فرمول صحیح)
-const GOLD_COEFFICIENT = 31.1035; // تبدیل اونس به گرم
-const PURITY_18K = 0.75; // خلوص 18 عیار (18/24)
+const GOLD_COEFFICIENT = 31.1034768; 
+const PURITY_18K = 0.750;
 
-// کلاس محاسبه‌گر
 class GoldCalculator {
   constructor(marketPrice, dollarRate, globalOunce) {
     this.marketPrice = parseFloat(marketPrice);
@@ -11,13 +9,10 @@ class GoldCalculator {
   }
 
   calculateGold24k() {
-    // فرمول صحیح: (قیمت انس × نرخ دلار) ÷ 31.1035
     return (this.globalOunce * this.dollarRate) / GOLD_COEFFICIENT;
   }
 
   calculateGold18k() {
-    // محاسبه قیمت واقعی 18 عیار
-    // 18 عیار = 75% خلوص
     return this.calculateGold24k() * PURITY_18K;
   }
 
@@ -35,222 +30,118 @@ class GoldCalculator {
   }
 
   getStatus(percentage) {
-    if (percentage > 15) return { text: '🔴 حباب بسیار بالا', type: 'danger' };
-    if (percentage > 10) return { text: '🟠 حباب بالا', type: 'warning' };
-    if (percentage > 5) return { text: '🟡 حباب متوسط', type: 'medium' };
-    if (percentage > 0) return { text: '🟢 حباب پایین', type: 'low' };
-    if (percentage > -5) return { text: '✅ قیمت منصفانه', type: 'fair' };
-    return { text: '💚 فرصت خرید', type: 'opportunity' };
+    if (percentage > 15) return { text: 'حباب بسیار بالا', type: 'danger' };
+    if (percentage > 10) return { text: 'حباب بالا', type: 'warning' };
+    if (percentage > 5) return { text: 'حباب متوسط', type: 'medium' };
+    if (percentage > 0) return { text: 'حباب پایین', type: 'low' };
+    if (percentage > -5) return { text: 'قیمت منصفانه', type: 'fair' };
+    return { text: 'فرصت خرید استثنایی', type: 'opportunity' };
   }
 
   getRecommendation(percentage) {
-    if (percentage > 15) return '⛔️ خرید نکنید! حباب بسیار زیاد است. بهتر است منتظر کاهش قیمت بمانید.';
-    if (percentage > 10) return '⚠️ توصیه می‌شود صبر کنید. قیمت فعلی بالاتر از حد معمول است.';
-    if (percentage > 5) return '💡 قیمت کمی بالاتر از حد معمول است. در صورت نیاز فوری می‌توانید خرید کنید.';
-    if (percentage > 0) return '✅ قیمت نسبتاً مناسب است. اجرت و سود طبیعی در قیمت لحاظ شده.';
-    if (percentage > -5) return '✅ قیمت بسیار منصفانه است. زمان مناسبی برای خرید.';
-    return '🎯 فرصت عالی برای خرید! قیمت پایین‌تر از قیمت واقعی است.';
+    if (percentage > 15) return 'اختلاف قیمت بسیار زیاد است. خرید در این سطح ریسک بالایی دارد.';
+    if (percentage > 10) return 'قیمت بازار حباب قابل توجهی دارد. پیشنهاد به تامل بیشتر.';
+    if (percentage > 5) return 'قیمت کمی بالاتر از ارزش ذاتی است. خرید فقط در صورت نیاز فوری.';
+    if (percentage > 0) return 'وضعیت پایدار. قیمت بازار با احتساب سود متعارف هماهنگ است.';
+    if (percentage > -5) return 'قیمت بسیار ایده آل. ارزش ذاتی با قیمت بازار منطبق است.';
+    return 'قیمت بازار پایین‌تر از ارزش واقعی طلا است. فرصت مناسب سرمایه‌گذاری.';
   }
 }
 
-// فرمت کردن اعداد با دقت کامل
-function formatNumber(num, showDecimals = false) {
-  // اگه عدد خیلی بزرگه، بدون اعشار نشون بده
-  if (!showDecimals || num > 1000000) {
-    return new Intl.NumberFormat('fa-IR', {
-      minimumFractionDigits: 0,
-      maximumFractionDigits: 0
-    }).format(Math.round(num));
-  }
-  
-  // برای اعداد کوچیکتر یا زمانی که اعشار خواسته شده
+function formatNumber(num, precision = 0) {
   return new Intl.NumberFormat('fa-IR', {
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 2
+    minimumFractionDigits: precision,
+    maximumFractionDigits: precision
   }).format(num);
 }
 
-// تبدیل اعداد فارسی به انگلیسی
-function persianToEnglish(str) {
-  const persianNumbers = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
-  const englishNumbers = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9'];
-  
-  for (let i = 0; i < 10; i++) {
-    str = str.replace(new RegExp(persianNumbers[i], 'g'), englishNumbers[i]);
-  }
-  return str;
+function p2e(str) {
+  return str.replace(/[۰-۹]/g, d => '۰۱۲۳۴۵۶۷۸۹'.indexOf(d));
 }
 
-// دریافت تاریخ و زمان
 function getDateTime() {
-  const now = new Date();
   return new Intl.DateTimeFormat('fa-IR', {
     year: 'numeric',
     month: 'long',
     day: 'numeric',
     hour: '2-digit',
     minute: '2-digit'
-  }).format(now);
+  }).format(new Date());
 }
 
-// فرمت خودکار ورودی
 function setupInputFormatting() {
   const inputs = document.querySelectorAll('#marketPrice, #dollarRate, #globalOunce');
-  
   inputs.forEach(input => {
     input.addEventListener('input', (e) => {
-      let value = persianToEnglish(e.target.value);
-      value = value.replace(/[^0-9]/g, '');
-      
-      if (value) {
-        const number = parseInt(value);
-        e.target.value = formatNumber(number);
-      }
-    });
-
-    // جلوگیری از paste کردن متن نامعتبر
-    input.addEventListener('paste', (e) => {
-      e.preventDefault();
-      const pastedText = (e.clipboardData || window.clipboardData).getData('text');
-      const cleanText = persianToEnglish(pastedText).replace(/[^0-9]/g, '');
-      if (cleanText) {
-        e.target.value = formatNumber(parseInt(cleanText));
+      let val = p2e(e.target.value).replace(/[^0-9.]/g, '');
+      if (val) {
+        const parts = val.split('.');
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, "،");
+        e.target.value = parts.length > 1 ? parts[0] + '.' + parts[1] : parts[0];
       }
     });
   });
 }
 
-// نمایش نتایج
 function displayResults(calculator) {
   const { bubble, percentage, realPrice, gold24k } = calculator.calculateBubble();
   const status = calculator.getStatus(percentage);
-  const recommendation = calculator.getRecommendation(percentage);
+  const rec = calculator.getRecommendation(percentage);
 
-  // نمایش بخش نتایج
   const resultsDiv = document.getElementById('results');
   resultsDiv.classList.remove('hidden');
-  resultsDiv.classList.add('animate-slide-down');
 
-  // پر کردن مقادیر با فرمت کامل
-  document.getElementById('gold24k').textContent = formatNumber(gold24k) + ' تومان';
-  document.getElementById('realPrice').textContent = formatNumber(realPrice) + ' تومان';
-  document.getElementById('bubbleAmount').textContent = 
-    (bubble >= 0 ? '+' : '') + formatNumber(Math.abs(bubble)) + ' تومان';
-  document.getElementById('bubblePercent').textContent = 
-    (percentage >= 0 ? '+' : '') + percentage.toFixed(2) + '%';
+  document.getElementById('gold24k').innerHTML = `${formatNumber(gold24k)} <span class="text-xs opacity-50">تومان</span>`;
+  document.getElementById('realPrice').innerHTML = `${formatNumber(realPrice)} <span class="text-xs opacity-50">تومان</span>`;
+  
+  const bblEl = document.getElementById('bubbleAmount');
+  bblEl.innerHTML = `${bubble >= 0 ? '＋' : ''}${formatNumber(bubble)} <span class="text-xs opacity-50">تومان</span>`;
+  
+  const pctEl = document.getElementById('bubblePercent');
+  pctEl.textContent = `${percentage >= 0 ? '＋' : ''}${percentage.toFixed(2)}٪`;
+  
   document.getElementById('datetime').textContent = getDateTime();
-  document.getElementById('recommendationText').textContent = recommendation;
+  document.getElementById('recommendationText').textContent = rec;
 
-  // استایل badge وضعیت
   const statusBadge = document.getElementById('statusBadge');
   statusBadge.textContent = status.text;
   
-  const statusStyles = {
-    danger: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300 border-2 border-red-300 dark:border-red-700',
-    warning: 'bg-orange-100 text-orange-800 dark:bg-orange-900/30 dark:text-orange-300 border-2 border-orange-300 dark:border-orange-700',
-    medium: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300 border-2 border-yellow-300 dark:border-yellow-700',
-    low: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 border-2 border-green-300 dark:border-green-700',
-    fair: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-300 border-2 border-emerald-300 dark:border-emerald-700',
-    opportunity: 'bg-teal-100 text-teal-800 dark:bg-teal-900/30 dark:text-teal-300 border-2 border-teal-300 dark:border-teal-700'
+  const themes = {
+    danger: 'bg-rose-50 text-rose-700 border-rose-200 dark:bg-rose-500/10 dark:text-rose-400 dark:border-rose-500/20',
+    warning: 'bg-orange-50 text-orange-700 border-orange-200 dark:bg-orange-500/10 dark:text-orange-400 dark:border-orange-500/20',
+    medium: 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-500/10 dark:text-amber-400 dark:border-amber-500/20',
+    low: 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-500/10 dark:text-emerald-400 dark:border-emerald-500/20',
+    fair: 'bg-blue-50 text-blue-700 border-blue-200 dark:bg-blue-500/10 dark:text-blue-400 dark:border-blue-500/20',
+    opportunity: 'bg-indigo-50 text-indigo-700 border-indigo-200 dark:bg-indigo-500/10 dark:text-indigo-400 dark:border-indigo-500/20'
   };
   
-  statusBadge.className = 'px-6 py-3 rounded-full font-bold text-lg shadow-lg ' + statusStyles[status.type];
+  statusBadge.className = 'px-8 py-3 rounded-2xl font-black text-sm border shadow-sm transition-all ' + themes[status.type];
 
-  // رنگ‌بندی کارت‌های حباب
   const bubbleCard = document.getElementById('bubbleCard');
-  const percentCard = document.getElementById('percentCard');
-  
   if (percentage > 0) {
-    const redClasses = 'bg-red-50 dark:bg-red-900/20 border-red-300 dark:border-red-700 text-red-900 dark:text-red-300';
-    bubbleCard.className = 'rounded-xl p-4 border-2 ' + redClasses;
-    percentCard.className = 'rounded-xl p-4 border-2 ' + redClasses;
+    bubbleCard.className = 'rounded-2xl p-6 border bg-rose-50/30 border-rose-100 dark:bg-rose-500/5 dark:border-rose-500/10 text-rose-600';
   } else {
-    const greenClasses = 'bg-green-50 dark:bg-green-900/20 border-green-300 dark:border-green-700 text-green-900 dark:text-green-300';
-    bubbleCard.className = 'rounded-xl p-4 border-2 ' + greenClasses;
-    percentCard.className = 'rounded-xl p-4 border-2 ' + greenClasses;
+    bubbleCard.className = 'rounded-2xl p-6 border bg-emerald-50/30 border-emerald-100 dark:bg-emerald-500/5 dark:border-emerald-500/10 text-emerald-600';
   }
 
-  // اسکرول به نتایج
-  setTimeout(() => {
-    resultsDiv.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-  }, 100);
-
-  // ذخیره در localStorage برای آفلاین
-  localStorage.setItem('lastCalculation', JSON.stringify({
-    inputs: {
-      marketPrice: calculator.marketPrice,
-      dollarRate: calculator.dollarRate,
-      globalOunce: calculator.globalOunce
-    },
-    results: {
-      gold24k,
-      realPrice,
-      bubble,
-      percentage
-    },
-    timestamp: new Date().toISOString()
-  }));
+  resultsDiv.scrollIntoView({ behavior: 'smooth' });
 }
 
-// مدیریت فرم
 function setupFormHandler() {
-  const form = document.getElementById('goldForm');
-  
-  form.addEventListener('submit', (e) => {
+  document.getElementById('goldForm').addEventListener('submit', (e) => {
     e.preventDefault();
+    const getVal = id => p2e(document.getElementById(id).value).replace(/[,،]/g, '');
+    const m = getVal('marketPrice'), d = getVal('dollarRate'), o = getVal('globalOunce');
 
-    // دریافت مقادیر
-    const marketPrice = persianToEnglish(document.getElementById('marketPrice').value).replace(/,/g, '');
-    const dollarRate = persianToEnglish(document.getElementById('dollarRate').value).replace(/,/g, '');
-    const globalOunce = persianToEnglish(document.getElementById('globalOunce').value).replace(/,/g, '');
-
-    // اعتبارسنجی
-    if (!marketPrice || !dollarRate || !globalOunce) {
-      alert('لطفاً تمام فیلدها را پر کنید!');
-      return;
+    if (m > 0 && d > 0 && o > 0) {
+      displayResults(new GoldCalculator(m, d, o));
+    } else {
+      alert('تمامی مقادیر باید معتبر و بزرگتر از صفر باشند.');
     }
-
-    if (parseFloat(marketPrice) <= 0 || parseFloat(dollarRate) <= 0 || parseFloat(globalOunce) <= 0) {
-      alert('تمام مقادیر باید بیشتر از صفر باشند!');
-      return;
-    }
-
-    // محاسبه
-    const calculator = new GoldCalculator(marketPrice, dollarRate, globalOunce);
-    displayResults(calculator);
   });
 }
 
-// ریست فرم
-function setupResetHandler() {
-  const resetBtn = document.getElementById('resetBtn');
-  
-  resetBtn.addEventListener('click', () => {
-    document.getElementById('goldForm').reset();
-    document.getElementById('results').classList.add('hidden');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  });
-}
-
-// بارگذاری آخرین محاسبه (آفلاین)
-function loadLastCalculation() {
-  const lastCalc = localStorage.getItem('lastCalculation');
-  if (lastCalc) {
-    console.log('✅ آخرین محاسبه بارگذاری شد (حالت آفلاین)');
-  }
-}
-
-// راه‌اندازی
 document.addEventListener('DOMContentLoaded', () => {
   setupInputFormatting();
   setupFormHandler();
-  setupResetHandler();
-  loadLastCalculation();
-  
-  console.log('✅ شاتو آماده است!');
 });
-
-// Export برای استفاده در جاهای دیگر
-if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { GoldCalculator, formatNumber };
-}

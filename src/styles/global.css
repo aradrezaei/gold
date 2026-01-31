@@ -7,9 +7,10 @@
   font-display: swap;
 }
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
   /* در نسخه ۴ این دستور باید به این شکل باشد تا کلاس dark در اولویت قرار بگیرد */
-  --variant-dark: .dark &;
 
   --color-gold-50: #fffbf0;
   --color-gold-100: #fef2cd;

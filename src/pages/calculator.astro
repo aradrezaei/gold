@@ -1,0 +1,75 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+---
+
+<Layout title="شاتور - تحلیل هوشمند حباب طلا">
+  <Navbar currentPage="bubble" />
+  
+  <main class="relative min-h-screen pt-24 pb-12 overflow-hidden bg-white dark:bg-gray-950">
+    <div class="absolute inset-0 z-0">
+      <div class="absolute inset-0 bg-[linear-gradient(to_right,#80808008_1px,transparent_1px),linear-gradient(to_bottom,#80808008_1px,transparent_1px)] bg-[size:32px_32px] [mask-image:radial-gradient(ellipse_60%_50%_at_50%_0%,#000_70%,transparent_100%)]"></div>
+      <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[400px] bg-gold-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+    </div>
+
+    <div class="container mx-auto px-4 relative z-10 max-w-5xl">
+      <div class="text-center mb-12 animate-fade-in-up">
+        <h1 class="text-4xl md:text-5xl font-black text-gray-900 dark:text-white mb-4 tracking-tighter">
+           تحلیلگر <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#df920f] to-[#fcbf34]">حباب هوشمند</span>
+        </h1>
+        <p class="text-gray-500 dark:text-gray-400 font-medium font-shabnam">محاسبه دقیق شکاف قیمتی بازار و ارزش ذاتی طلا</p>
+      </div>
+
+      <div class="bg-white/70 dark:bg-gray-900/70 backdrop-blur-2xl rounded-[2.5rem] border border-gray-100 dark:border-gray-800 shadow-2xl overflow-hidden animate-fade-in-up">
+        <div class="p-8 md:p-10">
+          <form id="goldForm" class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div class="space-y-2">
+              <label class="text-xs font-bold text-gray-500 uppercase tracking-widest mr-1">قیمت بازار (۱۸ عیار)</label>
+              <input type="text" id="marketPrice" class="format-input w-full px-5 py-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl text-gray-900 dark:text-white focus:border-gold-500 outline-none transition-all font-mono text-lg" placeholder="۴,۵۰۰,۰۰۰" />
+            </div>
+            <div class="space-y-2">
+              <label class="text-xs font-bold text-gray-500 uppercase tracking-widest mr-1">نرخ دلار / تتر</label>
+              <input type="text" id="dollarRate" class="format-input w-full px-5 py-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl text-gray-900 dark:text-white focus:border-gold-500 outline-none transition-all font-mono text-lg" placeholder="۷۰,۰۰۰" />
+            </div>
+            <div class="space-y-2">
+              <label class="text-xs font-bold text-gray-500 uppercase tracking-widest mr-1">انس جهانی</label>
+              <input type="text" id="globalOunce" class="format-input w-full px-5 py-4 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-700 rounded-2xl text-gray-900 dark:text-white focus:border-gold-500 outline-none transition-all font-mono text-lg" placeholder="۲,۶۵۰" />
+            </div>
+            <div class="md:col-span-3">
+              <button type="submit" id="calculateBtn" class="w-full py-5 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-2xl font-black text-xl hover:shadow-[0_20px_40px_rgba(223,146,15,0.2)] transition-all duration-500">
+                شروع تحلیل هوشمند
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div id="results" class="hidden border-t border-gray-100 dark:border-gray-800 p-8 md:p-10 bg-gray-50/30 dark:bg-black/20">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+            <div class="space-y-4">
+              <div id="statusBadge" class="inline-block px-6 py-2 rounded-full text-xs font-black uppercase tracking-tighter mb-4"></div>
+              <div class="grid grid-cols-1 gap-4">
+                <div class="p-6 bg-white dark:bg-gray-900 rounded-3xl border border-gray-100 dark:border-gray-800 shadow-xl">
+                  <span class="text-[10px] font-black text-gray-400 uppercase block mb-1">ارزش واقعی (۱۸ عیار)</span>
+                  <div id="realPriceDisplay" class="text-3xl font-black text-gray-900 dark:text-white"></div>
+                </div>
+                <div id="bubbleCard" class="p-6 rounded-3xl border shadow-xl transition-all duration-500">
+                  <span class="text-[10px] font-black opacity-60 uppercase block mb-1">میزان حباب</span>
+                  <div id="bubbleAmount" class="text-3xl font-black"></div>
+                  <div id="bubblePercent" class="text-lg font-bold"></div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="p-6 bg-white dark:bg-gray-900 rounded-[2.5rem] border border-gray-100 dark:border-gray-800 shadow-2xl h-full flex flex-col justify-center">
+              <canvas id="bubbleChart" class="max-h-[300px]"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script is:inline src="https://cdn.jsdelivr.net/npm/chart.js"></script>

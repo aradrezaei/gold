@@ -80,10 +80,31 @@ import Footer from '../components/Footer.astro';
             <button id="addTrade" class="py-4 px-6 rounded-2xl border-2 border-dashed border-gray-200 dark:border-gray-700 text-gray-600 dark:text-gray-400 font-bold hover:border-gold-500 hover:text-gold-500 transition-all flex items-center justify-center gap-2">
               <span class="text-xl">+</span> افزودن معامله
             </button>
-            <button id="calculateProfit" class="group relative py-4 px-6 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-2xl font-black overflow-hidden shadow-xl hover:scale-[1.02] transition-all">
-              <div class="absolute inset-0 bg-gradient-to-r from-gold-400/20 to-transparent -translate-x-full group-hover:animate-shimmer"></div>
-              <span class="relative">محاسبه نهایی 📊</span>
-            </button>
+            
+<button id="calculateProfit" class="group relative py-4 px-10 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-2xl font-black overflow-hidden transition-all duration-500 hover:shadow-[0_20px_40px_rgba(251,176,27,0.15)] ">
+  
+  <div class="absolute inset-0 bg-gradient-to-r from-transparent via-gold-400/40 to-transparent -translate-x-full"></div>
+
+  <div class="relative flex items-center justify-center gap-3">
+    <div class="relative w-6 h-6">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-full h-full">
+            <circle cx="12" cy="12" r="9" class="stroke-gold-500/30 dark:stroke-gold-500/50" stroke-width="2" />
+            <path d="M8 16L10.5 13.5L13 16L16 11" 
+                  class="stroke-white dark:stroke-gray-900 group-hover:stroke-gold-500 transition-colors duration-300" 
+                  stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                <animate attributeName="stroke-dasharray" from="0 50" to="50 0" dur="1s" fill="freeze" />
+            </path>
+            <circle cx="16" cy="11" r="1.5" class="fill-gold-400 animate-pulse" />
+        </svg>
+    </div>
+
+    <span class="relative text-lg tracking-tighter">
+        محاسبه سود و زیان
+    </span>
+  </div>
+
+  <div class="absolute inset-0 border border-white/10 dark:border-black/5 rounded-2xl"></div>
+</button>
           </div>
         </div>
 
@@ -103,9 +124,27 @@ import Footer from '../components/Footer.astro';
             </div>
           </div>
 
-          <button id="resetProfit" class="w-full py-4 text-gray-400 font-bold hover:text-gray-900 dark:hover:text-white transition-colors">
-            🔄 تنظیم مجدد فرم
-          </button>
+<button id="resetProfit" class="group relative w-full py-5 overflow-hidden rounded-2xl bg-gray-50/50 dark:bg-white/5 border border-gray-200 dark:border-white/10 transition-all duration-500 hover:border-red-500/50 dark:hover:border-red-500/50 hover:shadow-[0_0_20px_rgba(239,68,68,0.1)] flex items-center justify-center gap-3">
+  
+  <div class="absolute inset-0 bg-gradient-to-r from-transparent via-red-500/5 to-transparent translate-x-[-100%] group-hover:translate-x-[100%] transition-transform duration-1000"></div>
+
+  <div class="relative">
+    <svg class="w-6 h-6 text-gray-400 group-hover:text-red-500 group-hover:rotate-[-180deg] transition-all duration-700 ease-out" 
+         viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M21 12C21 16.9706 16.9706 21 12 21C7.02944 21 3 16.9706 3 12C3 7.02944 7.02944 3 12 3C14.8273 3 17.3375 4.30561 19 6.32233M19 6.32233V3M19 6.32233H15.5" 
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M8 12C8 12 9 13 10.5 13C12 13 13 11 14.5 11C16 11 17 12 17 12" 
+            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+            class="opacity-0 group-hover:opacity-100 transition-opacity duration-300"/>
+    </svg>
+  </div>
+
+  <span class="relative text-sm font-black tracking-widest text-gray-500 dark:text-gray-400 group-hover:text-red-500 transition-colors duration-300 uppercase">
+    محاسبه مجدد
+  </span>
+
+  <div class="absolute bottom-0 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-red-500 group-hover:w-1/3 transition-all duration-500"></div>
+</button>
         </div>
       </div>
 
